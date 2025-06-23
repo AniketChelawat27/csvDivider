@@ -113,7 +113,7 @@
 .browse-button {
     background: none;
     border: none;
-    color: #3b4ce2;
+    color: #060819;
     font-weight: 700;
     font-size: 1.1rem;
     cursor: pointer;
@@ -131,7 +131,7 @@
 .submit-button {
     width: 100%;
     padding: 16px 0;
-    background: #181f2a;
+    background: #a4aab1;
     color: #fff;
     border: none;
     border-radius: 12px;
@@ -144,7 +144,7 @@
 }
 
 .submit-button:disabled {
-    background: #bfc8db;
+    background: #898a8a;
     cursor: not-allowed;
 }
 

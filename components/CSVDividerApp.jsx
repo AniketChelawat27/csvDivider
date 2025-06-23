@@ -122,16 +122,17 @@ export function CSVDividerApp() {
                                 type="number"
                                 id="divideInto"
                                 value={divideInto}
-                                onChange={(e) => setDivideInto(Math.max(2, parseInt(e.target.value) || 2))}
-                                min="2"
-                                max="100"
+                                onChange={(e) => setDivideInto(parseInt(e.target.value))}
+                                // min="2"
+                                // max="100"
                                 className="form-input"
+                                style={{width:"93%"}}
                             />
                         </div>
 
                         <UploadFiles
                             onSubmit={handleFileUpload}
-                            submitText="Upload & Process CSV Files"
+                            submitText="Upload & Process CSV File"
                             loading={loading}
                         />
 
