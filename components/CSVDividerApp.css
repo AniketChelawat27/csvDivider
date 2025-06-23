@@ -1,20 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=Inter:400,600,700,800&display=swap');
+
 /* CSV Divider App Styles */
 .csv-divider-container {
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    padding: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f7fafd;
+    font-family: 'Inter', system-ui, sans-serif;
 }
 
 .csv-divider-paper {
-    background: white;
+    background: #fff;
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    max-width: 600px;
+    border: 1.5px solid #e5eaf1;
+    box-shadow: 0 2px 8px rgba(16, 30, 54, 0.04);
+    padding: 48px 32px;
+    max-width: 480px;
     width: 100%;
 }
 
@@ -29,57 +31,121 @@
 }
 
 .csv-divider-title {
-    color: #333;
     font-size: 2.5rem;
-    margin: 0 0 10px 0;
-    font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    color: #181f2a;
+    margin-bottom: 8px;
+    text-align: center;
+    letter-spacing: -1px;
 }
 
 .csv-divider-subtitle {
-    color: #666;
-    font-size: 1.1rem;
-    margin: 0;
+    color: #7b8494;
+    font-size: 1.15rem;
+    text-align: center;
+    margin-bottom: 32px;
+    font-weight: 500;
 }
 
 .csv-divider-form {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 28px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    max-width: 300px;
-    align-self: center;
-    width: 100%;
+    margin-bottom: 0;
 }
 
 .form-label {
-    color: #333;
+    font-size: 1.05rem;
+    color: #232b3b;
     font-weight: 600;
-    font-size: 1rem;
-    margin: 0;
+    margin-bottom: 4px;
 }
 
 .form-input {
     width: 100%;
-    padding: 15px;
-    border: 2px solid #e1e5e9;
+    padding: 14px 16px;
+    border: 1.5px solid #e5eaf1;
     border-radius: 10px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-    box-sizing: border-box;
+    font-size: 1.1rem;
+    background: #f7fafd;
+    transition: border-color 0.2s;
+    font-family: inherit;
 }
 
 .form-input:focus {
+    border-color: #3b4ce2;
     outline: none;
-    border-color: #667eea;
+    background: #fff;
+}
+
+/* Dropzone styles (override UploadFiles.css if needed) */
+.upload-area {
+    border: 2px dashed #d3d8e2 !important;
+    border-radius: 16px !important;
+    background: #f7fafd !important;
+    padding: 36px 0 28px 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: border-color 0.2s;
+    margin-bottom: 0;
+}
+
+.upload-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+    color: #bfc8db;
+}
+
+.upload-text {
+    font-size: 1.1rem;
+    color: #7b8494;
+    margin-bottom: 2px;
+    font-weight: 500;
+}
+
+.browse-button {
+    background: none;
+    border: none;
+    color: #3b4ce2;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    margin: 0 0 0 2px;
+}
+
+.upload-subtext {
+    color: #bfc8db;
+    font-size: 0.98rem;
+    margin-top: 2px;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 16px 0;
+    background: #181f2a;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(16, 30, 54, 0.04);
+}
+
+.submit-button:disabled {
+    background: #bfc8db;
+    cursor: not-allowed;
 }
 
 .alert {
@@ -151,20 +217,11 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-    .csv-divider-container {
-        padding: 10px;
-    }
-    
+@media (max-width: 600px) {
     .csv-divider-paper {
-        padding: 20px;
+        padding: 24px 8px;
     }
-    
     .csv-divider-title {
         font-size: 2rem;
-    }
-    
-    .form-group {
-        max-width: 100%;
     }
 } 
