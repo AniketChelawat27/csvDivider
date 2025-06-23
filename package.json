@@ -1,0 +1,22 @@
+{
+    "name": "csv-divider",
+    "version": "1.0.0",
+    "description": "A Node.js script to divide large CSV files into multiple smaller files",
+    "main": "csv-divider.js",
+    "scripts": {
+        "start": "node csv-divider.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "csv",
+        "divide",
+        "split",
+        "nodejs"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "csv-parser": "^3.0.0",
+        "csv-writer": "^1.6.0"
+    }
+}
