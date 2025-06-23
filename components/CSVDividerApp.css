@@ -1,0 +1,170 @@
+/* CSV Divider App Styles */
+.csv-divider-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.csv-divider-paper {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 600px;
+    width: 100%;
+}
+
+.csv-divider-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.csv-divider-header {
+    text-align: center;
+}
+
+.csv-divider-title {
+    color: #333;
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.csv-divider-subtitle {
+    color: #666;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.csv-divider-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 300px;
+    align-self: center;
+    width: 100%;
+}
+
+.form-label {
+    color: #333;
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.form-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e1e5e9;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+.result-section {
+    margin-top: 20px;
+}
+
+.result-title {
+    color: #155724;
+    font-size: 1.25rem;
+    margin: 0 0 16px 0;
+    font-weight: 600;
+}
+
+.result-item {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.result-file-name {
+    color: #333;
+    font-size: 1.1rem;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
+.result-stats {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 4px 0;
+}
+
+.result-urls {
+    margin-top: 12px;
+}
+
+.url-label {
+    color: #333;
+    font-size: 0.9rem;
+    margin: 8px 0 4px 0;
+    font-weight: 600;
+}
+
+.url-text {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: #333;
+    background-color: #f1f3f4;
+    padding: 8px;
+    border-radius: 4px;
+    margin: 4px 0;
+    word-break: break-all;
+    line-height: 1.4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .csv-divider-container {
+        padding: 10px;
+    }
+    
+    .csv-divider-paper {
+        padding: 20px;
+    }
+    
+    .csv-divider-title {
+        font-size: 2rem;
+    }
+    
+    .form-group {
+        max-width: 100%;
+    }
+} 

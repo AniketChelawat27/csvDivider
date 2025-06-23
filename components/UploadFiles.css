@@ -1,0 +1,99 @@
+/* Upload Files Styles */
+.upload-files-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.upload-area {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+    border-color: #667eea !important;
+    background-color: #f8f9ff !important;
+}
+
+.upload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.upload-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: #667eea;
+}
+
+.upload-text {
+    font-size: 18px;
+    color: #666;
+    margin: 0 0 8px 0;
+    font-weight: 400;
+}
+
+.browse-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    color: #667eea;
+    padding: 0;
+    margin: 0;
+    text-decoration: underline;
+}
+
+.browse-button:hover {
+    color: #5a6fd8;
+}
+
+.upload-subtext {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+}
+
+.upload-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.submit-button {
+    height: fit-content;
+    width: fit-content;
+    align-self: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.submit-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.submit-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.files-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+} 

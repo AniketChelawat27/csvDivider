@@ -1,0 +1,33 @@
+/* Button Text With Loading Styles */
+.button-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.button-content.light .button-text {
+    color: #000;
+}
+
+.button-content.dark .button-text {
+    color: #fff;
+}
+
+.button-text {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+} 

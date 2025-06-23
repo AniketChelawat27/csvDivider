@@ -6,7 +6,7 @@ const { divideCSV } = require('./csvDivider');
 
 // Configuration
 const CONFIG = {
-    PORT: process.env.PORT || 3000,
+    PORT: process.env.PORT || 3001,
     MAX_FILE_SIZE: 100 * 1024 * 1024, // 100MB
     UPLOAD_DIR: 'uploads',
     OUTPUT_DIR: 'divided_csvs'
@@ -69,15 +69,16 @@ function formatFileSize(bytes) {
 }
 
 // Middleware
+app.use(express.json());
 app.use(express.static(__dirname));
 
-// Routes
+// Serve React app
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Handle CSV division
-app.post('/divide-csv', upload.single('csvFile'), async (req, res) => {
+// API Routes
+app.post('/api/divide-csv', upload.single('csvFile'), async (req, res) => {
     let uploadedFilePath = null;
     
     try {
@@ -90,7 +91,8 @@ app.post('/divide-csv', upload.single('csvFile'), async (req, res) => {
         }
 
         uploadedFilePath = req.file.path;
-        const divideInto = parseInt(req.body.divideInto);
+        const divideInto = parseInt(req.body.divideInto) || 2;
+        const uploadedUrl = req.body.uploadedUrl; // Get the uploaded URL from external API
         
         if (!divideInto || divideInto < 2) {
             return res.status(400).json({
@@ -99,8 +101,23 @@ app.post('/divide-csv', upload.single('csvFile'), async (req, res) => {
             });
         }
 
+        console.log(`Processing file: ${req.file.originalname}`);
+        console.log(`Uploaded URL: ${uploadedUrl}`);
+        console.log(`Dividing into: ${divideInto} parts`);
+
         // Process the CSV file
         const result = await divideCSV(uploadedFilePath, divideInto);
+        
+        // Add AWS URLs to the result (simulated for now)
+        if (result.success && result.filesCreated) {
+            result.filesCreated = result.filesCreated.map(file => ({
+                ...file,
+                awsUrl: `https://aws-s3-bucket.s3.amazonaws.com/divided-csvs/${file.fileName}`,
+                originalUploadedUrl: uploadedUrl // Include the original uploaded URL
+            }));
+        }
+        
+        console.log('Processing complete. Files created:', result.filesCreated?.length || 0);
         
         res.json(result);
 
@@ -134,7 +151,7 @@ app.get('/download/:filename', (req, res) => {
 });
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get('/api/health', (req, res) => {
     res.json({
         status: 'OK',
         timestamp: new Date().toISOString(),
@@ -178,7 +195,7 @@ function startServer() {
     }
 
     app.listen(CONFIG.PORT, () => {
-        console.log(`🚀 CSV Divider server running on http://localhost:${CONFIG.PORT}`);
+        console.log(`🚀 CSV Divider API server running on http://localhost:${CONFIG.PORT}`);
         console.log(`📁 Upload directory: ${path.join(__dirname, CONFIG.UPLOAD_DIR)}`);
         console.log(`📁 Output directory: ${outputDir}`);
         console.log(`📊 Max file size: ${formatFileSize(CONFIG.MAX_FILE_SIZE)}`);
