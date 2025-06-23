@@ -1,0 +1,19 @@
+// API endpoints and configuration constants
+export const API_ENDPOINTS = {
+    EXTERNAL_UPLOAD: 'https://easysource-uat.hirequotient.com/api/upload/files',
+    CSV_DIVIDER: '/api/divide-csv',
+    FILE_DOWNLOAD: '/download'
+};
+
+export const DEFAULT_VALUES = {
+    DIVIDE_INTO: 2,
+    MAX_FILES: 5,
+    MAX_FILE_SIZE: 100 * 1024 * 1024 // 100MB
+};
+
+export const FILE_TYPES = {
+    CSV: {
+        MIME_TYPE: 'text/csv',
+        EXTENSION: '.csv'
+    }
+}; 
