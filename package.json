@@ -34,6 +34,7 @@
         "@babel/core": "^7.23.6",
         "@babel/preset-env": "^7.23.6",
         "@babel/preset-react": "^7.23.3",
+        "@locator/babel-jsx": "^0.4.4",
         "@types/react": "^18.2.45",
         "@types/react-dom": "^18.2.18",
         "babel-loader": "^9.1.3",
