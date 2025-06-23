@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Divider</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CSV Divider</h1>
+            <p>Split your large CSV files into smaller, manageable parts</p>
+        </div>
+
+        <form id="csvForm">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Click to select a CSV file or drag and drop</div>
+                <input type="file" id="fileInput" accept=".csv" />
+            </div>
+
+            <div class="file-info" id="fileInfo">
+                <strong>Selected file:</strong> <span id="fileName"></span>
+                <br>
+                <strong>Size:</strong> <span id="fileSize"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="divideInto">Number of parts to divide into:</label>
+                <input type="number" id="divideInto" name="divideInto" min="2" max="100" value="2" required>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Divide CSV File
+            </button>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processing your CSV file...</p>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html> 
