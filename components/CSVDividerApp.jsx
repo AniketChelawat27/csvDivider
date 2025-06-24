@@ -62,6 +62,7 @@ export function CSVDividerApp() {
                   onSubmit={handleFileUpload}
                   submitText="Split this CSV"
                   loading={loading}
+                  multiple={false}
                   excludeDoc
                   excludeDocx
                   excludePdf

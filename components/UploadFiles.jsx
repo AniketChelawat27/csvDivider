@@ -41,12 +41,18 @@ export function UploadFiles({
     excludeZip = false,
     excludeDoc = false,
     excludeDocx = false,
+    multiple = true,
 }) {
     const [myFiles, setMyFiles] = useState([]);
     
     const onDrop = useCallback((acceptedFiles) => {
-        setMyFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
-    }, []);
+        if (multiple) {
+            setMyFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+        } else {
+            // For single file mode, replace the existing file
+            setMyFiles(acceptedFiles);
+        }
+    }, [multiple]);
 
     const removeFile = (file) => () => {
         setMyFiles((prevFiles) => prevFiles.filter((prevFile) => prevFile !== file));
@@ -93,8 +99,8 @@ export function UploadFiles({
 
     const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
         accept: acceptedFileTypes,
-        multiple: true,
-        maxFiles: 20,
+        multiple: multiple,
+        maxFiles: multiple ? 20 : 1,
         maxSize: 100000000, // 100MB
         onDrop,
     });
@@ -126,7 +132,7 @@ export function UploadFiles({
                         📁
                     </div>
                     <h4 className="upload-text">
-                        Drop your {supportedFormats} files here, or{" "}
+                        Drop your {supportedFormats} {multiple ? 'files' : 'file'} here, or{" "}
                         <button className="browse-button">
                             Browse
                         </button>
