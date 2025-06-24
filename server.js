@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const cors = require('cors');
 const { divideCSV } = require('./csvDivider');
 
 // Configuration
@@ -14,6 +15,14 @@ const CONFIG = {
 
 // Initialize Express app
 const app = express();
+
+// Configure CORS
+app.use(cors({
+    origin: ['http://localhost:3002', 'http://localhost:3000'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({

@@ -1,6 +1,6 @@
 // API endpoints and configuration constants
 export const API_ENDPOINTS = {
-    EXTERNAL_UPLOAD: 'https://easysource-uat.hirequotient.com/api/upload/files',
+    EXTERNAL_UPLOAD: 'https://easysource-stag2.hirequotient.com/api/upload/files',
     CSV_DIVIDER: '/api/divide-csv',
     FILE_DOWNLOAD: '/download'
 };
