@@ -40,45 +40,53 @@ export function ProcessingResult({ result }) {
                         <p className="url-label">
                             <strong>Uploaded Files:</strong>
                         </p>
-                        {result.uploadedFiles.map((file, index) => (
-                            <div key={index} className="uploaded-file-result">
-                                <p className="file-name">
-                                    <strong>{file.name}</strong>
-                                    {file.size && (
-                                        <span className="file-size">
-                                            ({(file.size / 1024 / 1024).toFixed(2)} MB)
-                                        </span>
-                                    )}
-                                </p>
-                                {file.link ? (
-                                    <div className="file-upload-success">
-                                        <p className="url-text success">
-                                            ✅ Uploaded: {file.link}
-                                        </p>
-                                        <button
-                                            className="create-project-btn"
-                                            onClick={() => handleCreateProject(file.name, index)}
-                                            disabled={creatingProjects[index]}
-                                        >
-                                            {creatingProjects[index] ? 'Creating Project...' : 'Create Project'}
-                                        </button>
-                                        {projectResults[index] && (
-                                            <div className={`project-result ${projectResults[index].success ? 'success' : 'error'}`}>
-                                                {projectResults[index].success ? (
-                                                    <p>✅ Project created successfully!</p>
-                                                ) : (
-                                                    <p>❌ Failed to create project: {projectResults[index].error}</p>
-                                                )}
-                                            </div>
+                        {result.uploadedFiles.map((file, index) => {
+                            const isCreating = creatingProjects[index];
+                            const projectResult = projectResults[index];
+                            const isProjectCreated = projectResult && projectResult.success;
+                            
+                            return (
+                                <div key={index} className="uploaded-file-result">
+                                    <p className="file-name">
+                                        <strong>{file.name}</strong>
+                                        {file.size && (
+                                            <span className="file-size">
+                                                ({(file.size / 1024 / 1024).toFixed(2)} MB)
+                                            </span>
                                         )}
-                                    </div>
-                                ) : (
-                                    <p className="url-text error">
-                                        ❌ Upload failed: No link returned
                                     </p>
-                                )}
-                            </div>
-                        ))}
+                                    {file.link ? (
+                                        <div className="file-upload-success">
+                                            <p className="url-text success">
+                                                ✅ Uploaded: {file.link}
+                                            </p>
+                                            <button
+                                                className={`create-project-btn ${isCreating ? 'creating' : ''} ${isProjectCreated ? 'created' : ''}`}
+                                                onClick={() => handleCreateProject(file.name, index)}
+                                                disabled={isCreating || isProjectCreated}
+                                            >
+                                                {isCreating ? 'Creating Project...' : 
+                                                 isProjectCreated ? 'Created Project' : 
+                                                 'Create Project'}
+                                            </button>
+                                            {projectResult && (
+                                                <div className={`project-result ${projectResult.success ? 'success' : 'error'}`}>
+                                                    {projectResult.success ? (
+                                                        <p>✅ Project created successfully!</p>
+                                                    ) : (
+                                                        <p>❌ Failed to create project: {projectResult.error}</p>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <p className="url-text error">
+                                            ❌ Upload failed: No link returned
+                                        </p>
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

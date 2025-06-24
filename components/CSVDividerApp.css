@@ -350,6 +350,21 @@
     box-shadow: none;
 }
 
+.create-project-btn.created {
+    background: #28a745;
+    color: #fff;
+    border: 1px solid #28a745;
+}
+
+.create-project-btn.created:disabled {
+    background: #28a745;
+    color: #fff;
+    border: 1px solid #28a745;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
 .project-result {
     padding: 8px 12px;
     border-radius: 6px;
