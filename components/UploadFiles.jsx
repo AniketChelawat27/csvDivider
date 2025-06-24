@@ -37,6 +37,10 @@ export function UploadFiles({
     submitText = "Divide CSV Files",
     loading = false,
     excludeCsv = false,
+    excludePdf = false,
+    excludeZip = false,
+    excludeDoc = false,
+    excludeDocx = false,
 }) {
     const [myFiles, setMyFiles] = useState([]);
     
@@ -48,26 +52,49 @@ export function UploadFiles({
         setMyFiles((prevFiles) => prevFiles.filter((prevFile) => prevFile !== file));
     };
 
-    // Build accept object for CSV files
+    // Build accept object based on exclusion flags
     const acceptedFileTypes = useMemo(() => {
-        if (excludeCsv) return {};
+        const acceptTypes = {};
         
-        return {
-            "text/csv": [".csv"],
-            "application/csv": [".csv"],
-        };
-    }, [excludeCsv]);
+        if (!excludeCsv) {
+            acceptTypes["text/csv"] = [".csv"];
+            acceptTypes["application/csv"] = [".csv"];
+        }
+        
+        if (!excludeZip) {
+            acceptTypes["application/zip"] = [".zip"];
+        }
+        
+        if (!excludePdf) {
+            acceptTypes["application/pdf"] = [".pdf"];
+        }
+        
+        if (!excludeDoc) {
+            acceptTypes["application/msword"] = [".doc"];
+        }
+        
+        if (!excludeDocx) {
+            acceptTypes["application/vnd.openxmlformats-officedocument.wordprocessingml.document"] = [".docx"];
+        }
+        
+        return acceptTypes;
+    }, [excludeCsv, excludePdf, excludeZip, excludeDoc, excludeDocx]);
 
     // Get the supported formats for display
     const supportedFormats = useMemo(() => {
-        if (excludeCsv) return "No file types supported";
-        return ".csv";
-    }, [excludeCsv]);
+        const formats = [];
+        if (!excludeCsv) formats.push(".csv");
+        if (!excludePdf) formats.push(".pdf");
+        if (!excludeDocx) formats.push(".docx");
+        if (!excludeDoc) formats.push(".doc");
+        if (!excludeZip) formats.push(".zip");
+        return formats.length > 0 ? formats.join(", ") : "No file types supported";
+    }, [excludeCsv, excludePdf, excludeDocx, excludeDoc, excludeZip]);
 
     const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
         accept: acceptedFileTypes,
         multiple: true,
-        maxFiles: 5,
+        maxFiles: 20,
         maxSize: 100000000, // 100MB
         onDrop,
     });
@@ -111,6 +138,7 @@ export function UploadFiles({
             </div>
             {onSubmit && (
                 <div className="upload-actions">
+                     
                     <button
                         className="submit-button"
                         onClick={handleSubmit}

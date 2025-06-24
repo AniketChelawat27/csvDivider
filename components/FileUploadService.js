@@ -36,6 +36,73 @@ export class FileUploadService {
         return { uploadedFileUrl, uploadData };
     }
 
+    static async uploadMultipleFiles(files) {
+        if (!files || files.length === 0) {
+            throw new Error('No files provided for upload');
+        }
+
+        if (files.length > 20) {
+            throw new Error('Maximum 20 files allowed for upload');
+        }
+
+        const requestPayload = new FormData();
+        for (const file of files) {
+            requestPayload.append("files", file);
+        }
+
+        console.log(`Uploading ${files.length} files to external API...`);
+        console.log('Files:', files.map(f => f.name));
+
+        const uploadResponse = await fetch(API_ENDPOINTS.EXTERNAL_UPLOAD, {
+            method: 'POST',
+            body: requestPayload
+        });
+
+        if (!uploadResponse.ok) {
+            throw new Error(`Upload failed: ${uploadResponse.status} ${uploadResponse.statusText}`);
+        }
+
+        const uploadData = await uploadResponse.json();
+        console.log('Multiple files upload response:', uploadData);
+
+        // Transform response to match the expected format
+        const attachments = [];
+        
+        // Handle different response formats
+        let responseUrls = [];
+        if (uploadData.urls && Array.isArray(uploadData.urls)) {
+            responseUrls = uploadData.urls;
+        } else if (uploadData.url) {
+            responseUrls = [uploadData.url];
+        } else if (Array.isArray(uploadData)) {
+            responseUrls = uploadData;
+        } else {
+            throw new Error('Invalid response format from upload API');
+        }
+
+        // Create attachments array with file links and names
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const link = responseUrls[i] || null;
+            
+            attachments.push({
+                link: link,
+                name: file.name,
+                size: file.size,
+                type: file.type
+            });
+        }
+
+        console.log(`✅ ${files.length} files uploaded successfully`);
+        console.log('Uploaded files:', attachments);
+
+        return {
+            files: attachments,
+            totalFiles: files.length,
+            uploadResponse: uploadData
+        };
+    }
+
     static async uploadSplitFile(splitFile) {
         try {
             // Create a File object from the split file path

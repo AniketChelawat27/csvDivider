@@ -1,48 +1,89 @@
-import React, { useState } from 'react';
-import { UploadFiles } from './UploadFiles';
-import { DivisionInput } from './DivisionInput';
-import { ProcessingResult } from './ProcessingResult';
-import { AppHeader } from './AppHeader';
-import { useFileProcessor } from '../hooks/useFileProcessor';
-import { DEFAULT_VALUES } from '../constants/api';
-import './CSVDividerApp.css';
+import React, { useState } from "react";
+import { UploadFiles } from "./UploadFiles";
+import { DivisionInput } from "./DivisionInput";
+import { ProcessingResult } from "./ProcessingResult";
+import { AppHeader } from "./AppHeader";
+import { useFileProcessor } from "../hooks/useFileProcessor";
+import { DEFAULT_VALUES } from "../constants/api";
+import "./CSVDividerApp.css";
 
 export function CSVDividerApp() {
-    const [divideInto, setDivideInto] = useState(DEFAULT_VALUES.DIVIDE_INTO);
-    const { loading, result, error, processFiles } = useFileProcessor();
+  const [divideInto, setDivideInto] = useState(DEFAULT_VALUES.DIVIDE_INTO);
+  const [activeTab, setActiveTab] = useState("split"); // "split" or "upload"
+  const { loading, result, error, processFiles, processMultipleFiles } = useFileProcessor();
 
-    const handleFileUpload = async (files) => {
-        await processFiles(files, divideInto);
-    };
+  const handleFileUpload = async (files) => {
+    await processFiles(files, divideInto);
+  };
 
-    return (
-        <div className="csv-divider-container">
-            <div className="csv-divider-paper">
-                <div className="csv-divider-content">
-                    <AppHeader />
+  const handleAWSUpload = async (files) => {
+    await processMultipleFiles(files);
+  };
 
-                    <div className="csv-divider-form">
-                        <DivisionInput 
-                            divideInto={divideInto} 
-                            setDivideInto={setDivideInto} 
-                        />
+  return (
+    <div className="csv-divider-container">
+      <div className="csv-divider-paper">
+        <div className="csv-divider-content">
+          <AppHeader />
 
-                        <UploadFiles
-                            onSubmit={handleFileUpload}
-                            submitText="Upload & Process CSV File"
-                            loading={loading}
-                        />
+          {/* Tab Navigation */}
+          <div className="tab-navigation">
+            <button
+              className={`tab-button ${activeTab === "split" ? "active" : ""}`}
+              onClick={() => setActiveTab("split")}
+            >
+              Split CSV
+            </button>
+            <button
+              className={`tab-button ${activeTab === "upload" ? "active" : ""}`}
+              onClick={() => setActiveTab("upload")}
+            >
+              Upload CSV
+            </button>
+          </div>
 
-                        {error && (
-                            <div className="alert alert-error">
-                                {error}
-                            </div>
-                        )}
+          {/* Tab Content */}
+          <div className="tab-content">
+            {activeTab === "split" && (
+              <div className="csv-divider-form">
+                <DivisionInput
+                  divideInto={divideInto}
+                  setDivideInto={setDivideInto}
+                />
 
-                        {result && <ProcessingResult result={result} />}
-                    </div>
-                </div>
-            </div>
+                <UploadFiles
+                  onSubmit={handleFileUpload}
+                  submitText="Split this CSV"
+                  loading={loading}
+                />
+
+                {error && <div className="alert alert-error">{error}</div>}
+
+                {result && <ProcessingResult result={result} />}
+              </div>
+            )}
+
+            {activeTab === "upload" && (
+              <div className="csv-divider-form">
+                <UploadFiles
+                  onSubmit={handleAWSUpload}
+                  submitText="Upload Files"
+                  loading={loading}
+                  excludeCsv={false}
+                  excludePdf={false}
+                  excludeZip={false}
+                  excludeDoc={false}
+                  excludeDocx={false}
+                />
+
+                {error && <div className="alert alert-error">{error}</div>}
+
+                {result && <ProcessingResult result={result} />}
+              </div>
+            )}
+          </div>
         </div>
-    );
-} 
+      </div>
+    </div>
+  );
+}
