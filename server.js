@@ -117,11 +117,11 @@ app.post('/api/divide-csv', upload.single('csvFile'), async (req, res) => {
         // Process the CSV file
         const result = await divideCSV(uploadedFilePath, divideInto);
         
-        // Add AWS URLs to the result (simulated for now)
+        // Add download URLs to the result instead of AWS URLs
         if (result.success && result.filesCreated) {
             result.filesCreated = result.filesCreated.map(file => ({
                 ...file,
-                awsUrl: `https://aws-s3-bucket.s3.amazonaws.com/divided-csvs/${file.fileName}`,
+                downloadUrl: `${req.protocol}://${req.get('host')}/api/download/${file.fileName}`,
                 originalUploadedUrl: uploadedUrl // Include the original uploaded URL
             }));
         }
@@ -142,17 +142,23 @@ app.post('/api/divide-csv', upload.single('csvFile'), async (req, res) => {
     }
 });
 
-// Handle file downloads
-app.get('/download/:filename', (req, res) => {
+// Serve divided CSV files for download
+app.get('/api/download/:filename', (req, res) => {
     const filename = req.params.filename;
     const filePath = path.join(__dirname, CONFIG.OUTPUT_DIR, filename);
     
     if (fs.existsSync(filePath)) {
-        res.download(filePath, filename, (err) => {
-            if (err) {
-                console.error('Download error:', err);
-                res.status(500).json({ error: 'Download failed' });
-            }
+        // Set headers for CSV download
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        
+        // Stream the file for download
+        const fileStream = fs.createReadStream(filePath);
+        fileStream.pipe(res);
+        
+        fileStream.on('error', (err) => {
+            console.error('Download error:', err);
+            res.status(500).json({ error: 'Download failed' });
         });
     } else {
         res.status(404).json({ error: 'File not found' });

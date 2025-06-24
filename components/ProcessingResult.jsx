@@ -155,14 +155,30 @@ export function ProcessingResult({ result }) {
                             {item.uploadedUrl}
                         </p>
                         <p className="url-label">
-                            <strong>Divided CSV URLs:</strong>
+                            <strong>Download Divided CSV Files:</strong>
                         </p>
-                        {item.result.filesCreated.map((file, fileIndex) => (
-                            <p key={fileIndex} className="url-text">
-                                {file.awsUrl}
-                            </p>
-                        ))}
-                        
+                        <div className="download-buttons">
+                            {item?.result?.filesCreated?.map((file, fileIndex) => (
+                                <div key={fileIndex} className="download-item">
+                                    <span className="file-info">
+                                        {file?.fileName} ({file?.recordCount} records)
+                                    </span>
+                                    <button
+                                        className="download-btn"
+                                        onClick={() => {
+                                            const link = document.createElement('a');
+                                            link.href = file.downloadUrl;
+                                            link.download = file.fileName;
+                                            document.body.appendChild(link);
+                                            link.click();
+                                            document.body.removeChild(link);
+                                        }}
+                                    >
+                                        📥 Download
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             ))}
