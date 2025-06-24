@@ -1,20 +1,44 @@
 import React, { useState } from 'react';
 import { JDProjectService } from './JDProjectService';
+import { BulkUploadService } from './BulkUploadService';
 
 export function ProcessingResult({ result }) {
     const [creatingProjects, setCreatingProjects] = useState({});
     const [projectResults, setProjectResults] = useState({});
+    const [bulkUploadResults, setBulkUploadResults] = useState({});
 
-    const handleCreateProject = async (fileName, fileIndex) => {
+    const handleCreateProject = async (fileName, fileIndex, fileLink) => {
         setCreatingProjects(prev => ({ ...prev, [fileIndex]: true }));
         
         try {
+            // Step 1: Create JD Project
             const projectResult = await JDProjectService.createProject(fileName);
             
             setProjectResults(prev => ({
                 ...prev,
                 [fileIndex]: { success: true, data: projectResult }
             }));
+            console.log("projectResult", projectResult);
+            // Step 2: Automatically start bulk upload if project creation was successful
+            if (projectResult && projectResult?.data?._id) {
+                try {
+                    const bulkUploadResult = await BulkUploadService.bulkUploadCandidates(
+                        projectResult?.data?._id,
+                        fileLink,
+                        fileName
+                    );
+                    
+                    setBulkUploadResults(prev => ({
+                        ...prev,
+                        [fileIndex]: { success: true, data: bulkUploadResult }
+                    }));
+                } catch (bulkUploadError) {
+                    setBulkUploadResults(prev => ({
+                        ...prev,
+                        [fileIndex]: { success: false, error: bulkUploadError.message }
+                    }));
+                }
+            }
         } catch (error) {
             setProjectResults(prev => ({
                 ...prev,
@@ -43,6 +67,7 @@ export function ProcessingResult({ result }) {
                         {result.uploadedFiles.map((file, index) => {
                             const isCreating = creatingProjects[index];
                             const projectResult = projectResults[index];
+                            const bulkUploadResult = bulkUploadResults[index];
                             const isProjectCreated = projectResult && projectResult.success;
                             
                             return (
@@ -62,7 +87,7 @@ export function ProcessingResult({ result }) {
                                             </p>
                                             <button
                                                 className={`create-project-btn ${isCreating ? 'creating' : ''} ${isProjectCreated ? 'created' : ''}`}
-                                                onClick={() => handleCreateProject(file.name, index)}
+                                                onClick={() => handleCreateProject(file.name, index, file.link)}
                                                 disabled={isCreating || isProjectCreated}
                                             >
                                                 {isCreating ? 'Creating Project...' : 
@@ -72,7 +97,18 @@ export function ProcessingResult({ result }) {
                                             {projectResult && (
                                                 <div className={`project-result ${projectResult.success ? 'success' : 'error'}`}>
                                                     {projectResult.success ? (
-                                                        <p>✅ Project created successfully!</p>
+                                                        <div>
+                                                            <p>✅ Project created successfully!</p>
+                                                            {bulkUploadResult && (
+                                                                <div className={`bulk-upload-result ${bulkUploadResult.success ? 'success' : 'error'}`}>
+                                                                    {bulkUploadResult.success ? (
+                                                                        <p>✅ Candidates upload started!</p>
+                                                                    ) : (
+                                                                        <p>⚠️ Project created but candidate upload failed: {bulkUploadResult.error}</p>
+                                                                    )}
+                                                                </div>
+                                                            )}
+                                                        </div>
                                                     ) : (
                                                         <p>❌ Failed to create project: {projectResult.error}</p>
                                                     )}
