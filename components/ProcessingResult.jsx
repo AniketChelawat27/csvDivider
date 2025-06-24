@@ -1,6 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { JDProjectService } from './JDProjectService';
 
 export function ProcessingResult({ result }) {
+    const [creatingProjects, setCreatingProjects] = useState({});
+    const [projectResults, setProjectResults] = useState({});
+
+    const handleCreateProject = async (fileName, fileIndex) => {
+        setCreatingProjects(prev => ({ ...prev, [fileIndex]: true }));
+        
+        try {
+            const projectResult = await JDProjectService.createProject(fileName);
+            
+            setProjectResults(prev => ({
+                ...prev,
+                [fileIndex]: { success: true, data: projectResult }
+            }));
+        } catch (error) {
+            setProjectResults(prev => ({
+                ...prev,
+                [fileIndex]: { success: false, error: error.message }
+            }));
+        } finally {
+            setCreatingProjects(prev => ({ ...prev, [fileIndex]: false }));
+        }
+    };
+
     // Handle multiple upload results
     if (result.type === "multiple_upload") {
         return (
@@ -27,9 +51,27 @@ export function ProcessingResult({ result }) {
                                     )}
                                 </p>
                                 {file.link ? (
-                                    <p className="url-text success">
-                                        ✅ Uploaded: {file.link}
-                                    </p>
+                                    <div className="file-upload-success">
+                                        <p className="url-text success">
+                                            ✅ Uploaded: {file.link}
+                                        </p>
+                                        <button
+                                            className="create-project-btn"
+                                            onClick={() => handleCreateProject(file.name, index)}
+                                            disabled={creatingProjects[index]}
+                                        >
+                                            {creatingProjects[index] ? 'Creating Project...' : 'Create Project'}
+                                        </button>
+                                        {projectResults[index] && (
+                                            <div className={`project-result ${projectResults[index].success ? 'success' : 'error'}`}>
+                                                {projectResults[index].success ? (
+                                                    <p>✅ Project created successfully!</p>
+                                                ) : (
+                                                    <p>❌ Failed to create project: {projectResults[index].error}</p>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
                                 ) : (
                                     <p className="url-text error">
                                         ❌ Upload failed: No link returned

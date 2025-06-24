@@ -2,7 +2,8 @@
 export const API_ENDPOINTS = {
     EXTERNAL_UPLOAD: 'https://easysource-stag2.hirequotient.com/api/upload/files',
     CSV_DIVIDER: '/api/divide-csv',
-    FILE_DOWNLOAD: '/download'
+    FILE_DOWNLOAD: '/download',
+    CREATE_JD_PROJECT: 'https://easysource-stag2.hirequotient.com/api/v2/project/create-jd-project'
 };
 
 export const DEFAULT_VALUES = {
