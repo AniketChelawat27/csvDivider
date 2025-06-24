@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { JDProjectService } from './JDProjectService';
 import { BulkUploadService } from './BulkUploadService';
 
-export function ProcessingResult({ result }) {
+export function ProcessingResult({ result, title = "" }) {
     const [creatingProjects, setCreatingProjects] = useState({});
     const [projectResults, setProjectResults] = useState({});
     const [bulkUploadResults, setBulkUploadResults] = useState({});
@@ -11,8 +11,11 @@ export function ProcessingResult({ result }) {
         setCreatingProjects(prev => ({ ...prev, [fileIndex]: true }));
         
         try {
+            // Create fileName with title prefix if title is provided
+            const projectFileName = title ? `${title}_${fileName}` : fileName;
+            
             // Step 1: Create JD Project
-            const projectResult = await JDProjectService.createProject(fileName);
+            const projectResult = await JDProjectService.createProject(projectFileName);
             
             setProjectResults(prev => ({
                 ...prev,

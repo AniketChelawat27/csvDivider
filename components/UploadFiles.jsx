@@ -42,6 +42,7 @@ export function UploadFiles({
     excludeDoc = false,
     excludeDocx = false,
     multiple = true,
+    disabled = false,
 }) {
     const [myFiles, setMyFiles] = useState([]);
     
@@ -148,7 +149,7 @@ export function UploadFiles({
                     <button
                         className="submit-button"
                         onClick={handleSubmit}
-                        disabled={!files?.length || loading}
+                        disabled={!files?.length || loading || disabled}
                     >
                         <ButtonTextWithLoading text={submitText} isLoading={loading} variant="light" />
                     </button>

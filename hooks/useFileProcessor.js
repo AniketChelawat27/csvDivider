@@ -62,7 +62,7 @@ export function useFileProcessor() {
     }
   };
 
-  const processMultipleFiles = async (files) => {
+  const processMultipleFiles = async (files, title = "") => {
     setLoading(true);
     setError(null);
     setResult(null);
@@ -73,8 +73,8 @@ export function useFileProcessor() {
         files.map((f) => f.name)
       );
 
-      // Use the new uploadMultipleFiles method
-      const uploadResult = await FileUploadService.uploadMultipleFiles(files);
+      // Use the new uploadMultipleFiles method with title
+      const uploadResult = await FileUploadService.uploadMultipleFiles(files, title);
 
       setResult({
         type: "multiple_upload",

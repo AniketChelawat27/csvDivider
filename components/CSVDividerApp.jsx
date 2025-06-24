@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { UploadFiles } from "./UploadFiles";
 import { DivisionInput } from "./DivisionInput";
+import { TitleInput } from "./TitleInput";
 import { ProcessingResult } from "./ProcessingResult";
 import { AppHeader } from "./AppHeader";
 import { useFileProcessor } from "../hooks/useFileProcessor";
@@ -9,6 +10,7 @@ import "./CSVDividerApp.css";
 
 export function CSVDividerApp() {
   const [divideInto, setDivideInto] = useState(DEFAULT_VALUES.DIVIDE_INTO);
+  const [title, setTitle] = useState("");
   const [activeTab, setActiveTab] = useState("split"); // "split" or "upload"
   const { loading, result, error, processFiles, processMultipleFiles, reset } =
     useFileProcessor();
@@ -18,7 +20,7 @@ export function CSVDividerApp() {
   };
 
   const handleAWSUpload = async (files) => {
-    await processMultipleFiles(files);
+    await processMultipleFiles(files, title);
   };
 
   return (
@@ -71,16 +73,25 @@ export function CSVDividerApp() {
 
                 {error && <div className="alert alert-error">{error}</div>}
 
-                {result && <ProcessingResult result={result} />}
+                {result && <ProcessingResult result={result} title={title} />}
               </div>
             )}
 
             {activeTab === "upload" && (
               <div className="csv-divider-form">
+                <TitleInput title={title} setTitle={setTitle} />
+                
+                {!title.trim() && (
+                  <div className="alert alert-info">
+                    Please enter a project title to continue
+                  </div>
+                )}
+
                 <UploadFiles
                   onSubmit={handleAWSUpload}
                   submitText="Upload Files"
                   loading={loading}
+                  disabled={!title.trim()}
                   excludeCsv={false}
                   excludePdf
                   excludeZip
@@ -90,7 +101,7 @@ export function CSVDividerApp() {
 
                 {error && <div className="alert alert-error">{error}</div>}
 
-                {result && <ProcessingResult result={result} />}
+                {result && <ProcessingResult result={result} title={title} />}
               </div>
             )}
           </div>
