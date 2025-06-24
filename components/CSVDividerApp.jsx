@@ -62,6 +62,10 @@ export function CSVDividerApp() {
                   onSubmit={handleFileUpload}
                   submitText="Split this CSV"
                   loading={loading}
+                  excludeDoc
+                  excludeDocx
+                  excludePdf
+                  excludeZip
                 />
 
                 {error && <div className="alert alert-error">{error}</div>}
@@ -77,10 +81,10 @@ export function CSVDividerApp() {
                   submitText="Upload Files"
                   loading={loading}
                   excludeCsv={false}
-                  excludePdf={false}
-                  excludeZip={false}
-                  excludeDoc={false}
-                  excludeDocx={false}
+                  excludePdf
+                  excludeZip
+                  excludeDoc
+                  excludeDocx
                 />
 
                 {error && <div className="alert alert-error">{error}</div>}
