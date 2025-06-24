@@ -10,7 +10,8 @@ import "./CSVDividerApp.css";
 export function CSVDividerApp() {
   const [divideInto, setDivideInto] = useState(DEFAULT_VALUES.DIVIDE_INTO);
   const [activeTab, setActiveTab] = useState("split"); // "split" or "upload"
-  const { loading, result, error, processFiles, processMultipleFiles } = useFileProcessor();
+  const { loading, result, error, processFiles, processMultipleFiles, reset } =
+    useFileProcessor();
 
   const handleFileUpload = async (files) => {
     await processFiles(files, divideInto);
@@ -30,13 +31,19 @@ export function CSVDividerApp() {
           <div className="tab-navigation">
             <button
               className={`tab-button ${activeTab === "split" ? "active" : ""}`}
-              onClick={() => setActiveTab("split")}
+              onClick={() => {
+                setActiveTab("split");
+                reset();
+              }}
             >
               Split CSV
             </button>
             <button
               className={`tab-button ${activeTab === "upload" ? "active" : ""}`}
-              onClick={() => setActiveTab("upload")}
+              onClick={() => {
+                setActiveTab("upload");
+                reset();
+              }}
             >
               Upload CSV
             </button>

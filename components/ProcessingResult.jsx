@@ -77,31 +77,6 @@ export function ProcessingResult({ result }) {
                             </p>
                         ))}
                         
-                        {/* Display split file upload results */}
-                        {item.splitFileUploads && item.splitFileUploads.length > 0 && (
-                            <>
-                                <p className="url-label">
-                                    <strong>Split Files Upload Results:</strong>
-                                </p>
-                                {item.splitFileUploads.map((splitFile, splitIndex) => (
-                                    <div key={splitIndex} className="split-file-result">
-                                        <p className="split-file-name">
-                                            <strong>{splitFile.fileName}</strong> 
-                                            ({splitFile.recordCount} records)
-                                        </p>
-                                        {splitFile.uploadedUrl ? (
-                                            <p className="url-text success">
-                                                ✅ Uploaded: {splitFile.uploadedUrl}
-                                            </p>
-                                        ) : (
-                                            <p className="url-text error">
-                                                ❌ Upload failed: {splitFile.error}
-                                            </p>
-                                        )}
-                                    </div>
-                                ))}
-                            </>
-                        )}
                     </div>
                 </div>
             ))}
